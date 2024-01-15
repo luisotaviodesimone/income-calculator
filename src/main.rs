@@ -18,7 +18,6 @@ fn main() -> Result<(), slint::PlatformError> {
             Ok(value) => parsed_num = value,
             Err(_) => {
                 println!("Unable to parse. Resetting variable.");
-                
             }
         }
 
