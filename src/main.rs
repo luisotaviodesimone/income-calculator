@@ -11,11 +11,21 @@ fn main() -> Result<(), slint::PlatformError> {
     let ui_handle = ui.as_weak();
     ui.on_request_divide_income(move |string| {
         let ui = ui_handle.unwrap();
-        let num: f64 = string.trim().parse().unwrap();
-        let tax: f64 = num * TAXPER;
-        let owner: f64 = num * OWNERPER;
-        let profit: f64 = num * PROFITPER;
-        let opex: f64 = num * OPEXPER;
+
+        let mut parsed_num: f64 = 0.0;
+
+        match string.trim().parse::<f64>() {
+            Ok(value) => parsed_num = value,
+            Err(_) => {
+                println!("Unable to parse. Resetting variable.");
+                
+            }
+        }
+
+        let tax: f64 = parsed_num * TAXPER;
+        let owner: f64 = parsed_num * OWNERPER;
+        let profit: f64 = parsed_num * PROFITPER;
+        let opex: f64 = parsed_num * OPEXPER;
 
         let result = format!(
             "Taxes: {:.2}\nOwner: {:.2}\nProfit: {:.2}\nOpEx: {:.2}",
@@ -27,10 +37,17 @@ fn main() -> Result<(), slint::PlatformError> {
 
         ui.set_results(result.into());
     });
-    // ui.on_request_increase_value(move || {
-    //     let ui = ui_handle.unwrap();
-    //     ui.set_counter(ui.get_counter() + 1);
-    // });
-
     ui.run()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn equals_100() {
+        let result = TAXPER + OWNERPER + PROFITPER + OPEXPER;
+        let formatted = f64::trunc(result * 100.0) / 100.0;
+        assert_eq!(formatted, 1.00);
+    }
 }

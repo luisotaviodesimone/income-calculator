@@ -13,6 +13,7 @@ component CalculateButton {
 
 export component AppWindow inherits Window {
     in property <string> results: "";
+    in-out property <bool> open-curtain;
     callback request-divide-income(string);
 
     GridLayout {
@@ -36,7 +37,10 @@ export component AppWindow inherits Window {
         }
         Row {
             CalculateButton {
-                clicked => {request-divide-income(income.text)}
+                clicked => {
+                    root.open-curtain = !root.open-curtain;
+                    request-divide-income(income.text);
+                }
             }
         }
 
@@ -50,6 +54,30 @@ export component AppWindow inherits Window {
                         text: root.results;
                         font-size: 16px;
                         font-weight: 500;
+                    }
+
+                    Rectangle {
+                        background: #333333;
+                        x: 0;
+                        width: open-curtain ? 0px : parent.width / 2;
+                        height: parent.height;
+                        animate width {
+                            duration: 250ms;
+                            easing: ease-in;
+                        }
+                    }
+                    Rectangle {
+                        background: #333333;
+                        x: open-curtain ? parent.width : parent.width / 2;
+                        width: open-curtain ? 0px : parent.width / 2;
+                        animate width {
+                            duration: 250ms;
+                            easing: ease-in;
+                        }
+                        animate x {
+                            duration: 250ms;
+                            easing: ease-in;
+                        }
                     }
                 }
             }
