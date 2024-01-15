@@ -1,0 +1,15 @@
+[package]
+name = "income-calculator"
+version = "0.1.0"
+authors = ["luisotaviodesimone <luisotaviodesimone@gmail.com>"]
+edition = "2021"
+build = "build.rs"
+description = "Small app to calculate income"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+slint = "1.0"
+
+[build-dependencies]
+slint-build = "1.0"
